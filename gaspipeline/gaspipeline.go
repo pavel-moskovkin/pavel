@@ -106,11 +106,11 @@ func calculateLocation(houses []uint) (result pipeline, totalLength int) {
 	result.pipes = pipes
 	result.houses = houses
 
-	totalLength = result.calculateCost()
+	totalLength = result.calculateLen()
 	return result, totalLength
 }
 
-func (pl *pipeline) calculateCost() (totalLength int) {
+func (pl *pipeline) calculateLen() (totalLength int) {
 	var l int
 	for _, p := range pl.pipes {
 		if p.start.x == p.finish.x {
@@ -124,7 +124,7 @@ func (pl *pipeline) calculateCost() (totalLength int) {
 }
 
 func (pl *pipeline) printPipeline() {
-	matrix := prepareMatrix(pl)
+	matrix := pl.prepareMatrix()
 
 	for _, pipe := range pl.pipes {
 		matrix[pipe.start.y][pipe.start.x] = "."
@@ -142,7 +142,7 @@ func (pl *pipeline) printPipeline() {
 	fmt.Printf("%v  | ^ R O A D ^ |   %v < distance from road\n\n", "Y/X", xLine)
 }
 
-func prepareMatrix(pl *pipeline) map[uint][]string {
+func (pl *pipeline) prepareMatrix() map[uint][]string {
 	matrix := make(map[uint][]string, 0)
 	var maxDist uint = 0
 	for _, d := range pl.houses {
