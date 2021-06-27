@@ -1,6 +1,7 @@
 package pipeline
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -20,6 +21,61 @@ func TestSimpleLine(t *testing.T) {
 		require.Equal(t, houses[i+1], pipe.finish.x)
 		require.Equal(t, i, pipe.start.y)
 		require.Equal(t, i+1, pipe.finish.y)
+	}
+}
+
+type tcs struct {
+	houses []uint
+	exp    []pipe
+}
+
+func TestCoords(t *testing.T) {
+	tests := []tcs{
+		{
+			houses: []uint{1, 2, 3},
+			exp: []pipe{
+				{start: coords{x: 1, y: 0}, finish: coords{x: 1, y: 1}},
+				{start: coords{x: 1, y: 1}, finish: coords{x: 2, y: 1}},
+				{start: coords{x: 2, y: 1}, finish: coords{x: 2, y: 2}},
+				{start: coords{x: 2, y: 2}, finish: coords{x: 3, y: 2}},
+			},
+		},
+		{
+			houses: []uint{5, 3, 0},
+			exp: []pipe{
+				{start: coords{x: 5, y: 0}, finish: coords{x: 3, y: 0}},
+				{start: coords{x: 3, y: 0}, finish: coords{x: 3, y: 1}},
+				{start: coords{x: 3, y: 1}, finish: coords{x: 0, y: 1}},
+				{start: coords{x: 0, y: 1}, finish: coords{x: 0, y: 2}},
+			},
+		},
+		{
+			houses: []uint{1, 4, 2},
+			exp: []pipe{
+				{start: coords{x: 1, y: 0}, finish: coords{x: 1, y: 1}},
+				{start: coords{x: 1, y: 1}, finish: coords{x: 4, y: 1}},
+				{start: coords{x: 2, y: 1}, finish: coords{x: 2, y: 2}},
+			},
+		},
+		{
+			houses: []uint{2, 4, 1},
+			exp: []pipe{
+				{start: coords{x: 2, y: 0}, finish: coords{x: 2, y: 1}},
+				{start: coords{x: 2, y: 1}, finish: coords{x: 4, y: 1}},
+				{start: coords{x: 4, y: 1}, finish: coords{x: 1, y: 1}},
+				{start: coords{x: 1, y: 1}, finish: coords{x: 1, y: 2}},
+			},
+		},
+	}
+
+	for i, tc := range tests {
+		t.Run(fmt.Sprintf("%v", i), func(t *testing.T) {
+			location, _ := calculateLocation(tc.houses)
+			location.printPipeline()
+			for j, p := range location.pipes {
+				require.Equal(t, tc.exp[j], p)
+			}
+		})
 	}
 }
 
