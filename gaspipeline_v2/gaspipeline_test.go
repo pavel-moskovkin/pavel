@@ -12,7 +12,7 @@ type test struct {
 	excepted uint
 }
 
-func TestOne(t *testing.T) {
+func TestCalculateLocation(t *testing.T) {
 	tcs := []test{
 		{
 			houses:   []uint{0, 0, 0, 0, 0},
