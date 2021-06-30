@@ -43,7 +43,7 @@ func TestOne(t *testing.T) {
 	for i, tc := range tcs {
 		t.Run(fmt.Sprintf("%v", i), func(t *testing.T) {
 			res := calculateLocation(tc.houses)
-			require.Equal(t, int(tc.result), int(res))
+			require.Equal(t, tc.result, res)
 		})
 	}
 }
