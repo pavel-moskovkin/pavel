@@ -4,13 +4,13 @@ package pipeline
 // https://gist.github.com/rusdevops/d85340e26aeac720c338874492adf637#file-21645-md
 //
 
-// The idea is to gradually move pipe from the road and calculate overall length from the pipeline
-// to the houses. When length becomes bigger than on previous iteration, return.
+// The idea is to gradually move the pipe from the road and calculate overall length from the pipeline
+// to the houses. When overall length becomes bigger than on previous iteration, return.
 func calculateLocation(houses []uint) (dist uint) {
 	// total length from houses to the pipe on prev and current iteration
 	var sumBeforeMove, sumAfterMove uint = 0, 0
-	// 'false' if the pipe is located between a house and the road
-	// 'true' if a house is between the pipe and the road
+	// 'isCrossed[i]=false' if the pipe is located between a house[i] and the road
+	// 'isCrossed[i]=true' if a house[i] is between the pipe and the road
 	isCrossed := make(map[int]bool, 0)
 
 	// init values
@@ -19,7 +19,7 @@ func calculateLocation(houses []uint) (dist uint) {
 		isCrossed[i] = false
 	}
 
-	// func 'move' used tp increment distance from the pipe parallel to the road and the road
+	// func 'move' used to increment distance from the pipe parallel to the road and the road,
 	// and calculate required variables.
 	move := func() {
 		sumAfterMove = 0
